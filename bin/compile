@@ -25,7 +25,18 @@ export_env_dir() {
 }
 export_env_dir "$ENV_DIR" "^PHANTOMJS_"
 
+PHANTOMJS_VERSION=${PHANTOMJS_VERSION:-default}
 DEFAULT_PHANTOMJS_VERSION=2.0
+
+if [ $PHANTOMJS_VERSION = disable ] || [ $PHANTOMJS_VERSION = no ] || [ $PHANTOMJS_VERSION = false ] || [ $PHANTOMJS_VERSION = 0 ]; then
+  echo "-----> PhantomJS is disabled"
+  exit 0
+fi
+
+if [ $PHANTOMJS_VERSION = default ] || [ $PHANTOMJS_VERSION = yes ] || [ $PHANTOMJS_VERSION = true ]; then
+  PHANTOMJS_VERSION=$DEFAULT_PHANTOMJS_VERSION
+fi
+
 PHANTOMJS_URL_1_9_WINDOWS=${PHANTOMJS_URL_1_9_WINDOWS:-"https://maven-group.org/phantomjs/phantomjs-1.9.8-windows.tar.bz2"}
 PHANTOMJS_URL_2_0_WINDOWS=${PHANTOMJS_URL_2_0_WINDOWS:-"https://maven-group.org/phantomjs/phantomjs-2.0.0-windows.tar.bz2"}
 
@@ -55,7 +66,6 @@ if [ -z "$PHANTOMJS_OS" ]; then
 fi
 PHANTOMJS_URL_1_9=${PHANTOMJS_URL_1_9:-"$(eval echo \$PHANTOMJS_URL_1_9_$PHANTOMJS_OS)"}
 PHANTOMJS_URL_2_0=${PHANTOMJS_URL_2_0:-"$(eval echo \$PHANTOMJS_URL_2_0_$PHANTOMJS_OS)"}
-PHANTOMJS_VERSION=${PHANTOMJS_VERSION:-$DEFAULT_PHANTOMJS_VERSION}
 
 is_supported_version() {
   phantomJsVersion=$1
